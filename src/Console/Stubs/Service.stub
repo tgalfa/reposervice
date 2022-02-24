@@ -1,0 +1,18 @@
+<?php
+
+namespace %namespaces.services%;
+
+use %namespaces.repositories%\%repositoryName%;
+use %namespaces.serviceInterface%;
+use %namespaces.mainService%\%mainService%;
+
+class %modelName%Service extends %mainService% implements %serviceInterface%
+{
+    /**
+     * @return string
+     */
+    public function repository()
+    {
+        return %repositoryName%::class;
+    }
+}

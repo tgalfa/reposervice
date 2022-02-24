@@ -1,0 +1,10 @@
+<?php
+
+namespace %namespaces.serviceInterfaces%;
+
+use %namespaces.mainServiceInterface%\%mainServiceInterface%;
+
+interface %modelName%ServiceInterface extends %mainServiceInterface%
+{
+
+}

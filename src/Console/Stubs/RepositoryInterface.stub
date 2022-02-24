@@ -1,0 +1,10 @@
+<?php
+
+namespace %namespaces.repositoryInterfaces%;
+
+use %namespaces.mainRepositoryInterface%\%mainRepositoryInterface%;
+
+interface %modelName%RepositoryInterface extends %mainRepositoryInterface%
+{
+
+}
