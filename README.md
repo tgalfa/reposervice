@@ -11,7 +11,7 @@ RepoService Generator is a Laravel package that generates service and interface 
 You can install the package via composer:
 
 ```bash
-composer require tgalfa/reposervice
+composer require tgalfa/reposervice --dev
 ```
 
 You can publish the config file with:
