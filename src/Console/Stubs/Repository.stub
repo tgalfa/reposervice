@@ -1,0 +1,18 @@
+<?php
+
+namespace %namespaces.repositories%;
+
+use %namespaces.model%\%modelName%;
+use %namespaces.repositoryInterface%;
+use %namespaces.mainRepository%\%mainRepository%;
+
+class %modelName%Repository extends %mainRepository% implements %repositoryInterface%
+{
+    /**
+     * @return string
+     */
+    public function model()
+    {
+        return %modelName%::class;
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "name": "tgalfa/reposervice",
+    "description": "Generate repository, service and interface files for Repository-Service Pattern.",
+    "keywords": [
+        "php",
+        "laravel",
+        "generator",
+        "cli",
+        "repository",
+        "service"
+    ],
+    "homepage": "https://github.com/tgalfa/reposervice",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gergo Tar",
+            "email": "dev@gergotar.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "brianium/paratest": "^6.4",
+        "jubeki/laravel-code-style": "^1.0",
+        "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "tgalfa\\RepoService\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tgalfa\\RepoService\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=PSR2 src/",
+        "phpcsfixer": "vendor/bin/php-cs-fixer fix",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/testbench package:test --parallel --no-coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "tgalfa\\RepoService\\RepoServiceServiceProvider"
+            ]
+        }
+    }
+}
