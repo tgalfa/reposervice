@@ -103,6 +103,8 @@ The following methods are available:
 
     public function update(Model $model, array $data, array $scopes = []);
 
+    public function updateOrCreate(array $attributes, array $data, array $scopes = []);
+
     public function delete(Model $model);
 ```
 
@@ -145,6 +147,14 @@ Update existing Post:
 $post = $this->postService->update($post, $request->all());
 ```
 
+Update existing Post if all the given attributes matches or create a new Post:
+```php
+$post = $this->postService->updateOrCreate(
+    ['slug' => $request->slug],
+    $request->all()
+);
+```
+
 Delete Post:
 ```php
 $post = $this->postService->delete($post);
@@ -171,6 +181,8 @@ $post = $this->postService->delete($post);
     public function store(array $data);
 
     public function update(Model $model, array $data);
+
+    public function updateOrCreate(array $attributes, array $data);
 
     public function delete(Model $model);
 ```
