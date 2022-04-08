@@ -149,6 +149,26 @@ abstract class AbstractMainService implements MainServiceInterface
     }
 
     /**
+     * Create or update a record matching the attributes, and fill it with values.
+     * Store to DB if there are no errors.
+     *
+     * @param  array  $attributes
+     * @param  array  $data
+     * @param  array  $scopes  Array with scope names and its parameters
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function updateOrCreate(array $attributes, array $data, array $scopes = []): Model
+    {
+        $model = $this->repository->updateOrCreate($attributes, $data);
+
+        if (! empty($scopes)) {
+            $model = $this->loadScopes($model, $scopes);
+        }
+
+        return $model;
+    }
+
+    /**
      * Delete Model by id.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model

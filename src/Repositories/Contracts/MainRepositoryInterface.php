@@ -28,5 +28,7 @@ interface MainRepositoryInterface
 
     public function update(Model $model, array $data);
 
+    public function updateOrCreate(array $attributes, array $data);
+
     public function delete(Model $model);
 }
