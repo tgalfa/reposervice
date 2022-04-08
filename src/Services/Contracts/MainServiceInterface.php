@@ -24,5 +24,7 @@ interface MainServiceInterface
 
     public function update(Model $model, array $data, array $scopes = []);
 
+    public function updateOrCreate(array $attributes, array $data, array $scopes = []);
+
     public function delete(Model $model);
 }

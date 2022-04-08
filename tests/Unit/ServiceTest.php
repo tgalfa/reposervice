@@ -83,6 +83,51 @@ class ServiceTest extends TestCase
     }
 
     /**
+     * Test {updateOrCreate} function.
+     *
+     * @return void
+     */
+    public function test_update_or_create(): void
+    {
+        // Test Update.
+        $model = TestModel::factory()->create([
+            'slug' => 'test',
+        ]);
+
+        $data = [
+            'name' => 'Test',
+        ];
+
+        $model = $this->testservice->updateOrCreate([
+            'slug' => $model->slug,
+        ], $data);
+
+        $this->assertEquals(
+            $model->name,
+            $data['name']
+        );
+
+        $result = $this->testrepo->get();
+        $this->assertEquals($result->count(), 1);
+
+        // Test Store.
+        $data = [
+            'name' => 'New Model',
+            'slug' => 'new-model',
+            'type' => 'new',
+        ];
+
+        $model = $this->testrepo->updateOrCreate([
+            'slug' => $data['slug'],
+        ], $data);
+
+        $this->assertModelExists($model);
+
+        $result = $this->testrepo->get();
+        $this->assertEquals($result->count(), 2);
+    }
+
+    /**
      * Test {delete} function.
      *
      * @return void

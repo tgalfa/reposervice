@@ -201,6 +201,35 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     }
 
     /**
+     * Create or update a record matching the attributes, and fill it with values.
+     * Store to DB if there are no errors.
+     *
+     * @param  array  $attributes
+     * @param  array  $data
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateOrCreate(array $attributes, array $data): Model
+    {
+        DB::beginTransaction();
+
+        try {
+            $model = $this->model->updateOrCreate($attributes, $this->trimData($data));
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info(json_encode($data));
+            Log::info($e->getMessage());
+
+            throw new InvalidArgumentException('Unable to update or save model data');
+        }
+
+        DB::commit();
+
+        return $model;
+    }
+
+    /**
      * Delete a Model record from the database.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model  The Model
