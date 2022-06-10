@@ -96,10 +96,6 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
             }
         }
 
-        if ($columns !== ['*']) {
-            $query->groupBy($columns);
-        }
-
         return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
