@@ -3,8 +3,8 @@
 namespace tgalfa\RepoService\Services;
 
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use tgalfa\RepoService\Repositories\AbstractMainRepository;
 use tgalfa\RepoService\Services\Contracts\MainServiceInterface;
@@ -69,15 +69,17 @@ abstract class AbstractMainService implements MainServiceInterface
      * Example:
      * ['myscope', 'myscopeWithParam' => 'myscopeParam'].
      *
-     * @param  array  $columns  List of selected columns
-     * @param  array  $scopes   Array with scope names and its parameters
+     * @param  array  $columns    List of selected columns
+     * @param  array  $scopes     Array with scope names and its parameters
+     * @param  int|null  $limit   Number of items would be displayed
      * @return \Illuminate\Support\Collection
      */
     public function get(
         array $columns = ['*'],
-        array $scopes = []
+        array $scopes = [],
+        int $limit = null
     ): Collection {
-        return $this->repository->get($columns, $scopes);
+        return $this->repository->get($columns, $scopes, $limit);
     }
 
     /**
@@ -89,7 +91,7 @@ abstract class AbstractMainService implements MainServiceInterface
      * @param  int  $perPage    Number of items would be displayed
      * @param  array  $columns  List of selected columns
      * @param  array  $scopes   Array with scope names and its parameters
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginate(
         int $perPage,

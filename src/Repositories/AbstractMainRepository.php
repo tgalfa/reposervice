@@ -3,8 +3,8 @@
 namespace tgalfa\RepoService\Repositories;
 
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -66,41 +66,26 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     }
 
     /**
-     * Get all the Model records in the database.
+     * Get all the Model records from the database.
      * Apply scope with the {$scopes} parameter.
      * Example:
      * ['myscope', 'myscopeWithParam' => 'myscopeParam'].
      *
-     * @param  array  $columns      List of selected columns
-     * @param  array  $scopes       Array with scope names and its parameters
-     * @param  int|null  $perPage   Number of items would be displayed
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param  array  $columns    List of selected columns
+     * @param  array  $scopes     Array with scope names and its parameters
+     * @param  int|null  $limit   Number of items would be displayed
+     * @return \Illuminate\Support\Collection
      */
     public function get(
         array $columns = ['*'],
         array $scopes = [],
-        int $perPage = null
-    ): Collection|LengthAwarePaginator {
-        $query = $this->model->select($columns);
-
-        // Apply scopes.
-        if (! empty($scopes)) {
-            foreach ($scopes as $scopeName => $param) {
-                $scopeName = is_numeric($scopeName) && is_string($param)
-                    ? $param
-                    : $scopeName;
-
-                if (is_string($scopeName)) {
-                    $query->{$scopeName}($scopeName !== $param ? $param : null);
-                }
-            }
-        }
-
-        return $perPage ? $query->paginate($perPage) : $query->get();
+        int $limit = null
+    ): Collection {
+        return $this->getData(false, $columns, $scopes, $limit);
     }
 
     /**
-     * Get paginated Model records in the database.
+     * Get paginated Model records from the database.
      * Apply scope with the {$scopes} parameter.
      * Example:
      * ['myscope', 'myscopeWithParam' => 'myscopeParam'].
@@ -108,14 +93,14 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      * @param  int  $perPage    Number of items would be displayed
      * @param  array  $columns  List of selected columns
      * @param  array  $scopes   Array with scope names and its parameters
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginate(
         int $perPage,
         array $columns = ['*'],
         array $scopes = []
     ): LengthAwarePaginator {
-        return $this->get($columns, $scopes, $perPage);
+        return $this->getData(true, $columns, $scopes, $perPage);
     }
 
     /**
@@ -266,6 +251,50 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     }
 
     /**
+     * Get the Model records from the database.
+     * Apply scope with the {$scopes} parameter.
+     * Example:
+     * ['myscope', 'myscopeWithParam' => 'myscopeParam'].
+     *
+     * @param  bool  $hasPagination  If pagaination is in used or not.
+     * @param  array  $columns    List of selected columns
+     * @param  array  $scopes     Array with scope names and its parameters
+     * @param  int|null  $limit   Number of items would be displayed
+     * @return \Illuminate\Support\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    private function getData(
+        bool $hasPagination,
+        array $columns = ['*'],
+        array $scopes = [],
+        int $limit = null
+    ): Collection|LengthAwarePaginator {
+        $query = $this->model->select($columns);
+
+        // Apply scopes.
+        if (! empty($scopes)) {
+            foreach ($scopes as $scopeName => $param) {
+                $scopeName = is_numeric($scopeName) && is_string($param)
+                    ? $param
+                    : $scopeName;
+
+                if (is_string($scopeName)) {
+                    $query->{$scopeName}($scopeName !== $param ? $param : null);
+                }
+            }
+        }
+
+        if ($hasPagination && $limit) {
+            return $query->paginate($limit);
+        }
+
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
+    }
+
+    /**
      * Trim whitspace from string Data.
      *
      * @param  string|array  $data
@@ -275,7 +304,7 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                $data[$key] = !is_null($value) ? $this->trimData($value) : $value;
+                $data[$key] = ! is_null($value) ? $this->trimData($value) : $value;
             }
         } elseif (is_string($data)) {
             return trim($data);
