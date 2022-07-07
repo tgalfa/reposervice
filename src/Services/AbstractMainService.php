@@ -56,9 +56,9 @@ abstract class AbstractMainService implements MainServiceInterface
     /**
      * Get Model.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    public function getModel(): Model
+    public function getModel()
     {
         return $this->repository->getModel();
     }
@@ -106,9 +106,9 @@ abstract class AbstractMainService implements MainServiceInterface
      *
      * @param  int  $id         Id of searched Model
      * @param  array  $columns  List of selected columns
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    public function getById(int $id, array $columns = ['*']): Model
+    public function getById(int $id, array $columns = ['*'])
     {
         return $this->repository->getById($id, $columns);
     }
@@ -118,9 +118,9 @@ abstract class AbstractMainService implements MainServiceInterface
      *
      * @param  array  $data    Data to be stored
      * @param  array  $scopes  Array with scope names and its parameters
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    public function store(array $data, array $scopes = []): Model
+    public function store(array $data, array $scopes = [])
     {
         $model = $this->repository->store($data);
 
@@ -137,9 +137,9 @@ abstract class AbstractMainService implements MainServiceInterface
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array  $data    Data to be stored
      * @param  array  $scopes  Array with scope names and its parameters
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    public function update(Model $model, array $data, array $scopes = []): Model
+    public function update(Model $model, array $data, array $scopes = [])
     {
         $model = $this->repository->update($model, $data);
 
@@ -157,9 +157,9 @@ abstract class AbstractMainService implements MainServiceInterface
      * @param  array  $attributes
      * @param  array  $data
      * @param  array  $scopes  Array with scope names and its parameters
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    public function updateOrCreate(array $attributes, array $data, array $scopes = []): Model
+    public function updateOrCreate(array $attributes, array $data, array $scopes = [])
     {
         $model = $this->repository->updateOrCreate($attributes, $data);
 
@@ -186,7 +186,7 @@ abstract class AbstractMainService implements MainServiceInterface
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array  $scopes  Array with scope names and its parameters
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
     private function loadScopes(Model $model, array $scopes)
     {
