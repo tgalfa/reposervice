@@ -16,7 +16,7 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     /**
      * The Repository Model.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model|mixed
      */
     protected $model;
 
@@ -58,7 +58,7 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     /**
      * Get Model.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
     public function getModel()
     {
@@ -108,9 +108,9 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      *
      * @param  int  $id         Id of searched Model
      * @param  array  $columns  List of selected columns
-     * @return \Illuminate\Database\Eloquent\Model | null
+     * @return \Illuminate\Database\Eloquent\Model|mixed|null
      */
-    public function getById(int $id, array $columns = ['*']): Model|null
+    public function getById(int $id, array $columns = ['*'])
     {
         return $this->model->find($id, $columns);
     }
@@ -120,11 +120,11 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      * Store to DB if there are no errors.
      *
      * @param  array  $data  Data to be stored
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      *
      * @throws InvalidArgumentException
      */
-    public function store(array $data): Model
+    public function store(array $data)
     {
         DB::beginTransaction();
 
@@ -151,11 +151,11 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model  The Model
      * @param  array  $data                                 Data to be stored
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      *
      * @throws InvalidArgumentException
      */
-    public function update(Model $model, array $data): Model
+    public function update(Model $model, array $data)
     {
         $throwsException = false;
         $exception = 'Unable to update model data';
@@ -191,11 +191,11 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      *
      * @param  array  $attributes
      * @param  array  $data
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      *
      * @throws InvalidArgumentException
      */
-    public function updateOrCreate(array $attributes, array $data): Model
+    public function updateOrCreate(array $attributes, array $data)
     {
         DB::beginTransaction();
 
