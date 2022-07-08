@@ -3,9 +3,7 @@
 namespace tgalfa\RepoService\Services;
 
 use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use tgalfa\RepoService\Repositories\AbstractMainRepository;
 use tgalfa\RepoService\Services\Contracts\MainServiceInterface;
 
@@ -72,13 +70,13 @@ abstract class AbstractMainService implements MainServiceInterface
      * @param  array  $columns    List of selected columns
      * @param  array  $scopes     Array with scope names and its parameters
      * @param  int|null  $limit   Number of items would be displayed
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function get(
         array $columns = ['*'],
         array $scopes = [],
         int $limit = null
-    ): Collection {
+    ) {
         return $this->repository->get($columns, $scopes, $limit);
     }
 
@@ -91,13 +89,13 @@ abstract class AbstractMainService implements MainServiceInterface
      * @param  int  $perPage    Number of items would be displayed
      * @param  array  $columns  List of selected columns
      * @param  array  $scopes   Array with scope names and its parameters
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
     public function paginate(
         int $perPage,
         array $columns = ['*'],
         array $scopes = []
-    ): LengthAwarePaginator {
+    ) {
         return $this->repository->paginate($perPage, $columns, $scopes);
     }
 

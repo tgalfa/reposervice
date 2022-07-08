@@ -3,9 +3,7 @@
 namespace tgalfa\RepoService\Repositories;
 
 use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
@@ -74,13 +72,13 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      * @param  array  $columns    List of selected columns
      * @param  array  $scopes     Array with scope names and its parameters
      * @param  int|null  $limit   Number of items would be displayed
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function get(
         array $columns = ['*'],
         array $scopes = [],
         int $limit = null
-    ): Collection {
+    ) {
         return $this->getData(false, $columns, $scopes, $limit);
     }
 
@@ -93,13 +91,13 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      * @param  int  $perPage    Number of items would be displayed
      * @param  array  $columns  List of selected columns
      * @param  array  $scopes   Array with scope names and its parameters
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
     public function paginate(
         int $perPage,
         array $columns = ['*'],
         array $scopes = []
-    ): LengthAwarePaginator {
+    ) {
         return $this->getData(true, $columns, $scopes, $perPage);
     }
 
@@ -260,14 +258,14 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
      * @param  array  $columns    List of selected columns
      * @param  array  $scopes     Array with scope names and its parameters
      * @param  int|null  $limit   Number of items would be displayed
-     * @return \Illuminate\Support\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Support\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
     private function getData(
         bool $hasPagination,
         array $columns = ['*'],
         array $scopes = [],
         int $limit = null
-    ): Collection|LengthAwarePaginator {
+    ) {
         $query = $this->model->select($columns);
 
         // Apply scopes.
