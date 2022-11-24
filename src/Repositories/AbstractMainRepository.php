@@ -302,7 +302,9 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                $data[$key] = ! is_null($value) ? $this->trimData($value) : $value;
+                $data[$key] = is_string($value) && $value !== null
+                    ? $this->trimData($value)
+                    : $value;
             }
         } elseif (is_string($data)) {
             return trim($data);
