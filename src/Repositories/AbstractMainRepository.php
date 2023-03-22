@@ -3,6 +3,7 @@
 namespace tgalfa\RepoService\Repositories;
 
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -249,6 +250,28 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
     }
 
     /**
+     * Apply scopes.
+     *
+     * @param  Builder  $query
+     * @param  array  $scopes
+     * @return Builder
+     */
+    public function applyScopes(Builder $query, array $scopes)
+    {
+        foreach ($scopes as $scopeName => $param) {
+            $scopeName = is_numeric($scopeName) && is_string($param)
+                ? $param
+                : $scopeName;
+
+            if (is_string($scopeName)) {
+                $query->{$scopeName}($scopeName !== $param ? $param : null);
+            }
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the Model records from the database.
      * Apply scope with the {$scopes} parameter.
      * Example:
@@ -270,15 +293,7 @@ abstract class AbstractMainRepository implements MainRepositoryInterface
 
         // Apply scopes.
         if (! empty($scopes)) {
-            foreach ($scopes as $scopeName => $param) {
-                $scopeName = is_numeric($scopeName) && is_string($param)
-                    ? $param
-                    : $scopeName;
-
-                if (is_string($scopeName)) {
-                    $query->{$scopeName}($scopeName !== $param ? $param : null);
-                }
-            }
+            $query = $this->applyScopes($query, $scopes);
         }
 
         if ($hasPagination && $limit) {
