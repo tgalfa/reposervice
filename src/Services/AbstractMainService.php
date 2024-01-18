@@ -12,7 +12,7 @@ abstract class AbstractMainService implements MainServiceInterface
     /**
      * The Repository.
      *
-     * @var \tgalfa\RepoService\Repositories\AbstractMainRepository|static
+     * @var \tgalfa\RepoService\Repositories\AbstractMainRepository|mixed
      */
     protected $repository;
 
